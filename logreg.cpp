@@ -205,7 +205,7 @@ double LogisticRegressionObjective::Eval(const DblVec& input, DblVec& gradient) 
 		} else if (score > 30) {//score大于30时
 			insLoss = 0;//损失为0，当score比较大时，log(1.0 + exp(-score))约等于0
 			insProb = 1;//当前模型分类正确的概率为1
-		} else {//当score在-30到30之间时
+		} else {//当score在-30到30之间时，使用公式计算
 			double temp = 1.0 + exp(-score);
 			insLoss = log(temp);
 			insProb = 1.0/temp;
