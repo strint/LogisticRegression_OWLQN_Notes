@@ -1,0 +1,11 @@
+*.tlog
+*.obj
+Debug/owlqnProj.exe.intermediate.manifest
+*.lastbuildstate
+Debug/owlqnProj.log
+*.cache
+Debug/vc100.idb
+*.pdb
+owlqnProj.vcxproj
+*.filters
+owlqnProj.vcxproj.user
