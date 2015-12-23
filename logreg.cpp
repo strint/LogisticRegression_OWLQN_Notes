@@ -20,7 +20,8 @@ LogisticRegressionProblem::LogisticRegressionProblem(const char* matFilename, co
 	}
 	string s;
 	getline(matfile, s);
-	//MatrixMarket是一个文件格式(http://math.nist.gov/MatrixMarket/formats.html)，这是这种格式文件的第一行
+	//MatrixMarket是一个文件格式(http://math.nist.gov/MatrixMarket/formats.html)
+	//"%%MatrixMarket matrix coordinate real general"这是这种格式文件的第一行
 	if (!s.compare("%%MatrixMarket matrix coordinate real general")) {
 		skipEmptyAndComment(matfile, s);
 
@@ -169,7 +170,7 @@ void LogisticRegressionProblem::AddInstance(const vector<float>& vals, bool labe
 	labels.push_back(label);
 }
 
-//计算yi*（W*X + b)
+//计算yi*（W*Xi + b)
 double LogisticRegressionProblem::ScoreOf(size_t i, const vector<double>& weights) const {
 	double score = 0;
 	for (size_t j=instance_starts[i]; j < instance_starts[i+1]; j++) {
