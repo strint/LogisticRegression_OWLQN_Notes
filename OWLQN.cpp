@@ -48,6 +48,42 @@ void OptimizerState::scaleInto(DblVec& a, const DblVec& b, double c) {
 	}
 }
 
+//计算下降方向dir（参数的一阶梯度）
+void OptimizerState::MakeSteepestDescDir() {
+
+	if (l1weight == 0) {
+		//l1正则化项权值为0时，查找方向dir为损失函数梯度的负方向
+		scaleInto(dir, grad, -1);
+	} else {
+		//l1正则化项权值不为0时，根据损失函数的梯度和l1正则化项权值来确定查找方向
+		for (size_t i=0; i<dim; i++) {
+			if (x[i] < 0) {
+				//xi<0时，右导一定小于0，左导中xi的符号为负，虚梯度取右导，下降方向为虚梯度的反方向
+				dir[i] = -grad[i] + l1weight;
+			} else if (x[i] > 0) {
+				//xi>0时，左导一定大于0，左导中xi的符号为正，虚梯度取左导，下降方向为虚梯度的反方向
+				dir[i] = -grad[i] - l1weight;
+			} else {//xi == 0
+				if (grad[i] < -l1weight) {
+					//xi == 0，右导<0，虚梯度取右导，下降方向为虚梯度的反方向
+					dir[i] = -grad[i] - l1weight;
+				} else if (grad[i] > l1weight) {
+					//xi == 0，左导>0，虚梯度取左导，下降方向为虚梯度的反方向
+					dir[i] = -grad[i] + l1weight;
+				} else {
+					//xi == 0，左右岛数都为0，下降方向为0
+					dir[i] = 0;
+				}
+			}
+		}
+	}
+
+	//当前的最速下降方向
+	steepestDescDir = dir;
+}
+
+//计算下降方向dir（参数的二阶梯度）
+//lbfgs中的two loop，用过去m次的信息来近似计算Hessian矩阵的逆(进而得到当前的下降方向)
 void OptimizerState::MapDirByInverseHessian() {
 	int count = (int)sList.size();
 
@@ -67,32 +103,6 @@ void OptimizerState::MapDirByInverseHessian() {
 			addMult(dir, *sList[i], -alphas[i] - beta);
 		}
 	}
-}
-
-void OptimizerState::MakeSteepestDescDir() {
-	//l1正则化项权值为时，查找方向dir为梯度的负方向
-	if (l1weight == 0) {
-		scaleInto(dir, grad, -1);
-	} else {
-
-		for (size_t i=0; i<dim; i++) {
-			if (x[i] < 0) {
-				dir[i] = -grad[i] + l1weight;
-			} else if (x[i] > 0) {
-				dir[i] = -grad[i] - l1weight;
-			} else {
-				if (grad[i] < -l1weight) {
-					dir[i] = -grad[i] - l1weight;
-				} else if (grad[i] > l1weight) {
-					dir[i] = -grad[i] + l1weight;
-				} else {
-					dir[i] = 0;
-				}
-			}
-		}
-	}
-
-	steepestDescDir = dir;
 }
 
 void OptimizerState::FixDirSigns() {
@@ -250,7 +260,10 @@ void OptimizerState::Shift() {
 	iter++;
 }
 
+//寻找最小损失的过程
+//输入依次为：优化问题、初始参数、收敛时的参数（输出的结果）、l1正则化项的参数、允许的误差、limit-memory中记忆的迭代步数的数量
 void OWLQN::Minimize(DifferentiableFunction& function, const DblVec& initial, DblVec& minimum, double l1weight, double tol, int m) const {
+	//输入依次为：优化问题、初始参数、limit-memory中记忆的迭代步数的数量、l1正则化项的参数、是否输出静默
 	OptimizerState state(function, initial, m, l1weight, quiet);
 
 	if (!quiet) {

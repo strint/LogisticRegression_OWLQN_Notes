@@ -113,12 +113,13 @@ int main(int argc, char* argv[]) {
 		size = prob->NumFeats(); 
 	}
 
+	//size为特征的维度，init为初始参数值向量，ans为结果参数值向量
 	DblVec init(size), ans(size);
 
 	OWLQN opt(quiet);
-	opt.Minimize(*obj, init, ans, regweight, tol, m);
 	//输入依次是LogisticRegressionObjective（包含了样本数据、l2正则化项的系数、损失函数）、
 	//参数的初始化值、参数最终的结果、l1正则化项的系数、允许的误差、lbfgs的记忆的项数
+	opt.Minimize(*obj, init, ans, regweight, tol, m);
 
 	int nonZero = 0;
 	for (size_t i = 0; i<ans.size(); i++) {
