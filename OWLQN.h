@@ -85,6 +85,7 @@ class OptimizerState {
 				std::cerr << "m must be an integer greater than zero." << std::endl;
 				exit(1);
 			}
+			//更新梯度、计算损失
 			value = EvalL1();
 			grad = newGrad;
 	}

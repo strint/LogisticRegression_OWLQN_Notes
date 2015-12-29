@@ -70,6 +70,7 @@ void OptimizerState::MapDirByInverseHessian() {
 }
 
 void OptimizerState::MakeSteepestDescDir() {
+	//l1正则化项权值为时，查找方向dir为梯度的负方向
 	if (l1weight == 0) {
 		scaleInto(dir, grad, -1);
 	} else {
@@ -159,13 +160,16 @@ void OptimizerState::GetNextPoint(double alpha) {
 }
 
 double OptimizerState::EvalL1() {
+	//根据新的X（即参数）来计算新的梯度newGrad、新的损失值loss
 	double val = func.Eval(newX, newGrad);
+	//如果l1正则化项的参数为正，损失加上l1正则化项的部分
 	if (l1weight > 0) {
 		for (size_t i=0; i<dim; i++) {
 			val += fabs(newX[i]) * l1weight;
 		}
 	}
 
+	//返回损失值
 	return val;
 }
 
@@ -193,6 +197,7 @@ void OptimizerState::BackTrackingLineSearch() {
 
 	while (true) {
 		GetNextPoint(alpha);
+		//更新梯度、计算损失
 		value = EvalL1();
 
 		if (value <= oldValue + c1 * origDirDeriv * alpha) break;
@@ -263,9 +268,12 @@ void OWLQN::Minimize(DifferentiableFunction& function, const DblVec& initial, Db
 	termCrit->GetValue(state, str);
 
 	while (true) {
+		//更新search direction
 		state.UpdateDir();
+		//查找step size
 		state.BackTrackingLineSearch();
 
+		//判断是否满足终止条件
 		ostringstream str;
 		double termCritVal = termCrit->GetValue(state, str);
 		if (!quiet) {
@@ -275,6 +283,7 @@ void OWLQN::Minimize(DifferentiableFunction& function, const DblVec& initial, Db
 
 		if (termCritVal < tol) break;
 
+		//更新状态
 		state.Shift();
 	}
 
