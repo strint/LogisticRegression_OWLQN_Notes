@@ -322,11 +322,13 @@ void OWLQN::Minimize(DifferentiableFunction& function, const DblVec& initial, Db
 
 		//判断是否满足终止条件
 		ostringstream str;
+		//减少的损失值相对于当前损失的比例
 		double termCritVal = termCrit->GetValue(state, str);
 		if (!quiet) {
 			cout << "Iter " << setw(4) << state.iter << ":  " << setw(10) << state.value;
 			cout << str.str() << flush;
 		}
+		//如果减少的损失值相对于当前损失的比例小于某个阈值，就停止迭代
 		if (termCritVal < tol) break;
 
 		//更新状态

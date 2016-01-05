@@ -106,7 +106,7 @@ public:
 	const DblVec& GetGrad() const { return newGrad; }
 	const DblVec& GetLastGrad() const { return grad; }
 	const DblVec& GetLastDir() const { return dir; }
-	double GetValue() const { return value; }
+	double GetValue() const { return value; } 
 	int GetIter() const { return iter; }
 	size_t GetDim() const { return dim; }
 };
