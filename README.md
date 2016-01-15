@@ -4,8 +4,9 @@
 
 # Logistic Regression
 
+
 # OWLQN
-## 相关论文
+### 相关论文
 * BFGS, LBFGS: [Anders Skajaa.Limited Memory BFGS for Nonsmooth Optimization.2010](http://www.cs.nyu.edu/overton/mstheses/skajaa/msthesis.pdf)
 * LBFGS:[J. Nocedal and S. Wright. Numerical Optimization. Springer, 2nd
 edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
