@@ -47,11 +47,14 @@ void printVector(const DblVec &vec, const char* filename) {
 
 int main(int argc, char* argv[]) {
 
+	//输入测参数至少包括程序本身的名字、feature_file、label_file、regWeight（coefficient of l1 regularizer）、output_file五个参数
+	//如果输入的参数少于5个或者第一个参数中包含help字符，则打印帮助并退出
 	if (argc < 5 || !strcmp(argv[1], "-help") || !strcmp(argv[1], "--help") ||
 		!strcmp(argv[1], "-h") || !strcmp(argv[1], "-usage")) {
 			printUsageAndExit();
 	}
 
+	//读入feature_file、label_file、regWeight（coefficient of l1 regularizer）、output_file
 	const char* feature_file = argv[1];
 	const char* label_file = argv[2];
 	double regweight = atof(argv[3]);//l1正则化项
@@ -62,26 +65,31 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
+	//给出默认值
 	bool leastSquares = false, quiet = false;
 	double tol = 1e-4, l2weight = 0;
 	int m = 10;
 
+	//对于可选的配置信息
 	for (int i=5; i<argc; i++) {
-		if (!strcmp(argv[i], "-ls")) leastSquares = true;
-		else if (!strcmp(argv[i], "-q")) quiet = true;
+		if (!strcmp(argv[i], "-ls")) leastSquares = true; //判断是否使用least square
+		else if (!strcmp(argv[i], "-q")) quiet = true; //判断是否静默输出
 		else if (!strcmp(argv[i], "-tol")) {
+			//读取tolerance
 			++i;
 			if (i >= argc || (tol = atof(argv[i])) <= 0) {
 				cout << "-tol (convergence tolerance) flag requires 1 positive real argument." << endl;
 				exit(1);
 			}
 		} else if (!strcmp(argv[i], "-l2weight")) {
+			//读取l2正则化项的权重
 			++i;
 			if (i >= argc || (l2weight = atof(argv[i])) < 0) {
 				cout << "-l2weight flag requires 1 non-negative real argument." << endl;
 				exit(1);
 			}
 		}	else if (!strcmp(argv[i], "-m")) {
+			//读取记忆项的个数
 			++i;
 			if (i >= argc || (m = atoi(argv[i])) == 0) {
 				cout << "-m (L-BFGS memory param) flag requires 1 positive int argument." << endl;
@@ -108,6 +116,7 @@ int main(int argc, char* argv[]) {
 		obj = new LeastSquaresObjective(*prob, l2weight);
 		size = prob->NumFeats(); 
 	} else {
+		//将数据导入到逻辑回归问题中
 		LogisticRegressionProblem *prob = new LogisticRegressionProblem(feature_file, label_file);
 		obj = new LogisticRegressionObjective(*prob, l2weight);
 		size = prob->NumFeats(); 
