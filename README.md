@@ -14,3 +14,6 @@
 * LBFGS:[J. Nocedal and S. Wright. Numerical Optimization. Springer, 2nd
 edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
 * OWLQN:[Galen Andrew and Jianfeng Gao.Scalable Training of L1-Regularized Log-Linear Models.2007](http://research.microsoft.com/en-us/um/people/jfgao/paper/icml07scalable.pdf)
+
+#相关的项目
+[并行逻辑回归](https://github.com/strint/DML/tree/master/logistic_regression)
