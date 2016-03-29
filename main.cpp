@@ -47,17 +47,18 @@ void printVector(const DblVec &vec, const char* filename) {
 
 int main(int argc, char* argv[]) {
 
-	//ÊäÈë²â²ÎÊıÖÁÉÙ°üÀ¨³ÌĞò±¾ÉíµÄÃû×Ö¡¢feature_file¡¢label_file¡¢regWeight£¨coefficient of l1 regularizer£©¡¢output_fileÎå¸ö²ÎÊı
-	//Èç¹ûÊäÈëµÄ²ÎÊıÉÙÓÚ5¸ö»òÕßµÚÒ»¸ö²ÎÊıÖĞ°üº¬help×Ö·û£¬Ôò´òÓ¡°ïÖú²¢ÍË³ö
+	//è¾“å…¥æµ‹å‚æ•°è‡³å°‘åŒ…æ‹¬ç¨‹åºæœ¬èº«çš„åå­—ã€feature_fileã€label_fileã€regWeightï¼ˆcoefficient of l1 regularizerï¼‰ã€output_fileäº”ä¸ªå‚æ•°
+        //output_fileä¸­å­˜çš„æ˜¯ç»“æœå‚æ•°å€¼å‘é‡
+	//å¦‚æœè¾“å…¥çš„å‚æ•°å°‘äº5ä¸ªæˆ–è€…ç¬¬ä¸€ä¸ªå‚æ•°ä¸­åŒ…å«helpå­—ç¬¦ï¼Œåˆ™æ‰“å°å¸®åŠ©å¹¶é€€å‡º
 	if (argc < 5 || !strcmp(argv[1], "-help") || !strcmp(argv[1], "--help") ||
 		!strcmp(argv[1], "-h") || !strcmp(argv[1], "-usage")) {
 			printUsageAndExit();
 	}
 
-	//¶ÁÈëfeature_file¡¢label_file¡¢regWeight£¨coefficient of l1 regularizer£©¡¢output_file
+	//è¯»å…¥feature_fileã€label_fileã€regWeightï¼ˆcoefficient of l1 regularizerï¼‰ã€output_file
 	const char* feature_file = argv[1];
 	const char* label_file = argv[2];
-	double regweight = atof(argv[3]);//l1ÕıÔò»¯Ïî
+	double regweight = atof(argv[3]);//l1æ­£åˆ™åŒ–é¡¹
 	const char* output_file = argv[4];
 
 	if (regweight < 0) {
@@ -65,31 +66,31 @@ int main(int argc, char* argv[]) {
 		exit(1);
 	}
 
-	//¸ø³öÄ¬ÈÏÖµ
+	//ç»™å‡ºé»˜è®¤å€¼
 	bool leastSquares = false, quiet = false;
 	double tol = 1e-4, l2weight = 0;
 	int m = 10;
 
-	//¶ÔÓÚ¿ÉÑ¡µÄÅäÖÃĞÅÏ¢
+	//å¯¹äºå¯é€‰çš„é…ç½®ä¿¡æ¯
 	for (int i=5; i<argc; i++) {
-		if (!strcmp(argv[i], "-ls")) leastSquares = true; //ÅĞ¶ÏÊÇ·ñÊ¹ÓÃleast square
-		else if (!strcmp(argv[i], "-q")) quiet = true; //ÅĞ¶ÏÊÇ·ñ¾²Ä¬Êä³ö
+		if (!strcmp(argv[i], "-ls")) leastSquares = true; //åˆ¤æ–­æ˜¯å¦ä½¿ç”¨least square
+		else if (!strcmp(argv[i], "-q")) quiet = true; //åˆ¤æ–­æ˜¯å¦é™é»˜è¾“å‡º
 		else if (!strcmp(argv[i], "-tol")) {
-			//¶ÁÈ¡tolerance
+			//è¯»å–tolerance
 			++i;
 			if (i >= argc || (tol = atof(argv[i])) <= 0) {
 				cout << "-tol (convergence tolerance) flag requires 1 positive real argument." << endl;
 				exit(1);
 			}
 		} else if (!strcmp(argv[i], "-l2weight")) {
-			//¶ÁÈ¡l2ÕıÔò»¯ÏîµÄÈ¨ÖØ
+			//è¯»å–l2æ­£åˆ™åŒ–é¡¹çš„æƒé‡
 			++i;
 			if (i >= argc || (l2weight = atof(argv[i])) < 0) {
 				cout << "-l2weight flag requires 1 non-negative real argument." << endl;
 				exit(1);
 			}
 		}	else if (!strcmp(argv[i], "-m")) {
-			//¶ÁÈ¡¼ÇÒäÏîµÄ¸öÊı
+			//è¯»å–è®°å¿†é¡¹çš„ä¸ªæ•°
 			++i;
 			if (i >= argc || (m = atoi(argv[i])) == 0) {
 				cout << "-m (L-BFGS memory param) flag requires 1 positive int argument." << endl;
@@ -116,18 +117,18 @@ int main(int argc, char* argv[]) {
 		obj = new LeastSquaresObjective(*prob, l2weight);
 		size = prob->NumFeats(); 
 	} else {
-		//½«Êı¾İµ¼Èëµ½Âß¼­»Ø¹éÎÊÌâÖĞ
+		//å°†æ•°æ®å¯¼å…¥åˆ°é€»è¾‘å›å½’é—®é¢˜ä¸­
 		LogisticRegressionProblem *prob = new LogisticRegressionProblem(feature_file, label_file);
 		obj = new LogisticRegressionObjective(*prob, l2weight);
 		size = prob->NumFeats(); 
 	}
 
-	//sizeÎªÌØÕ÷µÄÎ¬¶È£¬initÎª³õÊ¼²ÎÊıÖµÏòÁ¿£¬ansÎª½á¹û²ÎÊıÖµÏòÁ¿
+	//sizeä¸ºç‰¹å¾çš„ç»´åº¦ï¼Œinitä¸ºåˆå§‹å‚æ•°å€¼å‘é‡ï¼Œansä¸ºç»“æœå‚æ•°å€¼å‘é‡
 	DblVec init(size), ans(size);
 
 	OWLQN opt(quiet);
-	//ÊäÈëÒÀ´ÎÊÇLogisticRegressionObjective£¨°üº¬ÁËÑù±¾Êı¾İ¡¢l2ÕıÔò»¯ÏîµÄÏµÊı¡¢ËğÊ§º¯Êı£©¡¢
-	//²ÎÊıµÄ³õÊ¼»¯Öµ¡¢²ÎÊı×îÖÕµÄ½á¹û¡¢l1ÕıÔò»¯ÏîµÄÏµÊı¡¢ÔÊĞíµÄÎó²î¡¢lbfgsµÄ¼ÇÒäµÄÏîÊı
+	//è¾“å…¥ä¾æ¬¡æ˜¯LogisticRegressionObjectiveï¼ˆåŒ…å«äº†æ ·æœ¬æ•°æ®ã€l2æ­£åˆ™åŒ–é¡¹çš„ç³»æ•°ã€æŸå¤±å‡½æ•°ï¼‰ã€
+	//å‚æ•°çš„åˆå§‹åŒ–å€¼ã€å‚æ•°æœ€ç»ˆçš„ç»“æœã€l1æ­£åˆ™åŒ–é¡¹çš„ç³»æ•°ã€å…è®¸çš„è¯¯å·®ã€lbfgsçš„è®°å¿†çš„é¡¹æ•°
 	opt.Minimize(*obj, init, ans, regweight, tol, m);
 
 	int nonZero = 0;
