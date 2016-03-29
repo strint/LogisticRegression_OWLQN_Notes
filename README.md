@@ -6,10 +6,13 @@
 上面的代码是[Galen Andrew and Jianfeng Gao. 2007](http://research.microsoft.com/en-us/downloads/b1eb1016-1738-4bd5-83a9-370c9d498a03/default.aspx)论文中附带的。在这里对代码添加了比较详细的注释。
 
 ## Logistic Regression
-逻辑回归的公式
+* 逻辑回归的公式
+
 ![](notes1/lr_formular1.jpg)
 ![](notes1/lr_formular2.jpg)
-代码中逻辑回归的实现和对应的公式
+
+* 代码中逻辑回归的实现和对应的公式
+* 
 ![](notes1/lr.jpg)
 ![](notes1/lr_formular.jpg)
 
