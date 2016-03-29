@@ -8,13 +8,13 @@
 ## Logistic Regression
 * 逻辑回归的公式
 
-![](notes1/lr_formular1.jpg)
-![](notes1/lr_formular2.jpg)
-
-* 代码中逻辑回归的实现和对应的公式
-* 
 ![](notes1/lr.jpg)
+
+* 代码中逻辑回归对应的公式和计算流程
+
 ![](notes1/lr_formular.jpg)
+![](notes1/lr_owlqn.jpg)
+
 
 ## OWLQN
 ### 相关论文
@@ -23,9 +23,9 @@
 edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
 * OWLQN:[Galen Andrew and Jianfeng Gao.Scalable Training of L1-Regularized Log-Linear Models.2007](http://research.microsoft.com/en-us/um/people/jfgao/paper/icml07scalable.pdf)
 
-### 代码中OWLQN的实现和对应的公式
-![](notes1/owlqn1.jpg)
-![](notes1/owlqn2.jpg)
+### 代码中OWLQN的计算流程
+![](notes1/owlqn.jpg)
+
 
 
 ## 相关的项目
