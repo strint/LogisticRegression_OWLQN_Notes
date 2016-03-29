@@ -6,7 +6,12 @@
 上面的代码是[Galen Andrew and Jianfeng Gao. 2007](http://research.microsoft.com/en-us/downloads/b1eb1016-1738-4bd5-83a9-370c9d498a03/default.aspx)论文中附带的。在这里对代码添加了比较详细的注释。
 
 ## Logistic Regression
+逻辑回归的公式
 ![](notes1/lr_formular1.jpg)
+![](notes1/lr_formular2.jpg)
+代码中逻辑回归的实现和对应的公式
+![](notes1/lr.jpg)
+![](notes1/lr_formular.jpg)
 
 ## OWLQN
 ### 相关论文
@@ -14,6 +19,11 @@
 * LBFGS:[J. Nocedal and S. Wright. Numerical Optimization. Springer, 2nd
 edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
 * OWLQN:[Galen Andrew and Jianfeng Gao.Scalable Training of L1-Regularized Log-Linear Models.2007](http://research.microsoft.com/en-us/um/people/jfgao/paper/icml07scalable.pdf)
+
+### 代码中OWLQN的实现和对应的公式
+![](notes1/owlqn1.jpg)
+![](notes1/owlqn2.jpg)
+
 
 ## 相关的项目
 [并行逻辑回归](https://github.com/strint/DML/tree/master/logistic_regression)
