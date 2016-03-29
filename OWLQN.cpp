@@ -79,7 +79,7 @@ void OptimizerState::MakeSteepestDescDir() {
 		}
 	}
 
-	//当前的最速下降方向
+	//记录当前的最速下降方向
 	steepestDescDir = dir;
 }
 
