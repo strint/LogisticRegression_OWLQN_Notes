@@ -49,74 +49,74 @@ void OptimizerState::scaleInto(DblVec& a, const DblVec& b, double c) {
 }
 
 //OWLQN
-//¼ÆËãÏÂ½µ·½Ïòdir£¨²ÎÊýµÄÒ»½×ÌÝ¶È£¬ÐéÌÝ¶ÈµÄ¸º·½Ïò£©
+//è®¡ç®—ä¸‹é™æ–¹å‘dirï¼ˆå‚æ•°çš„ä¸€é˜¶æ¢¯åº¦ï¼Œè™šæ¢¯åº¦çš„è´Ÿæ–¹å‘ï¼‰
 void OptimizerState::MakeSteepestDescDir() {
 
 	if (l1weight == 0) {
-		//l1ÕýÔò»¯ÏîÈ¨ÖµÎª0Ê±£¬²éÕÒ·½ÏòdirÎªËðÊ§º¯ÊýÌÝ¶ÈµÄ¸º·½Ïò
+		//l1æ­£åˆ™åŒ–é¡¹æƒå€¼ä¸º0æ—¶ï¼ŒæŸ¥æ‰¾æ–¹å‘dirä¸ºæŸå¤±å‡½æ•°æ¢¯åº¦çš„è´Ÿæ–¹å‘
 		scaleInto(dir, grad, -1);
 	} else {
-		//l1ÕýÔò»¯ÏîÈ¨Öµ²»Îª0Ê±£¬¸ù¾ÝËðÊ§º¯ÊýµÄÌÝ¶ÈºÍl1ÕýÔò»¯ÏîÈ¨ÖµÀ´È·¶¨²éÕÒ·½Ïò
+		//l1æ­£åˆ™åŒ–é¡¹æƒå€¼ä¸ä¸º0æ—¶ï¼Œæ ¹æ®æŸå¤±å‡½æ•°çš„æ¢¯åº¦å’Œl1æ­£åˆ™åŒ–é¡¹æƒå€¼æ¥ç¡®å®šæŸ¥æ‰¾æ–¹å‘
 		for (size_t i=0; i<dim; i++) {
 			if (x[i] < 0) {
-				//xi<0Ê±£¬ÓÒµ¼Ò»¶¨Ð¡ÓÚ0£¬×óµ¼ÖÐxiµÄ·ûºÅÎª¸º£¬ÐéÌÝ¶ÈÈ¡ÓÒµ¼£¬ÏÂ½µ·½ÏòÎªÐéÌÝ¶ÈµÄ·´·½Ïò
+				//xi<0æ—¶ï¼Œ|xi| = - xiï¼Œl1å¤„çš„å€’æ•°ä¸º-l1weightï¼Œä¸‹é™æ–¹å‘ä¸ºæ¢¯åº¦çš„åæ–¹å‘
 				dir[i] = -grad[i] + l1weight;
 			} else if (x[i] > 0) {
-				//xi>0Ê±£¬×óµ¼Ò»¶¨´óÓÚ0£¬×óµ¼ÖÐxiµÄ·ûºÅÎªÕý£¬ÐéÌÝ¶ÈÈ¡×óµ¼£¬ÏÂ½µ·½ÏòÎªÐéÌÝ¶ÈµÄ·´·½Ïò
+				//xi>0æ—¶ï¼Œ|xi| = xiï¼Œl1å¤„çš„å€’æ•°ä¸ºl1weightï¼Œä¸‹é™æ–¹å‘ä¸ºæ¢¯åº¦çš„åæ–¹å‘
 				dir[i] = -grad[i] - l1weight;
 			} else {//xi == 0
 				if (grad[i] < -l1weight) {
-					//xi == 0£¬ÓÒµ¼<0£¬ÐéÌÝ¶ÈÈ¡ÓÒµ¼£¬ÏÂ½µ·½ÏòÎªÐéÌÝ¶ÈµÄ·´·½Ïò
+					//xi == 0ï¼Œå³å¯¼grad[i] + l1weight < 0ï¼Œè™šæ¢¯åº¦å–å³å¯¼ï¼Œä¸‹é™æ–¹å‘ä¸ºè™šæ¢¯åº¦çš„åæ–¹å‘ï¼Œdir[i] > 0ï¼Œåå‘æ­£è±¡é™
 					dir[i] = -grad[i] - l1weight;
 				} else if (grad[i] > l1weight) {
-					//xi == 0£¬×óµ¼>0£¬ÐéÌÝ¶ÈÈ¡×óµ¼£¬ÏÂ½µ·½ÏòÎªÐéÌÝ¶ÈµÄ·´·½Ïò
+					//xi == 0ï¼Œå·¦å¯¼grad[i] - l1weight > 0ï¼Œè™šæ¢¯åº¦å–å·¦å¯¼ï¼Œä¸‹é™æ–¹å‘ä¸ºè™šæ¢¯åº¦çš„åæ–¹å‘ï¼Œdir[i] < 0ï¼Œåå‘è´Ÿè±¡é™
 					dir[i] = -grad[i] + l1weight;
 				} else {
-					//xi == 0£¬×óÓÒµºÊý¶¼Îª0£¬ÏÂ½µ·½ÏòÎª0
+					//xi == 0ï¼Œå·¦å³å¯¼æ•°éƒ½ä¸º0ï¼Œä¸‹é™æ–¹å‘ä¸º0
 					dir[i] = 0;
 				}
 			}
 		}
 	}
 
-	//µ±Ç°µÄ×îËÙÏÂ½µ·½Ïò
+	//å½“å‰çš„æœ€é€Ÿä¸‹é™æ–¹å‘
 	steepestDescDir = dir;
 }
 
 //lgfgs
-//¼ÆËãÏÂ½µ·½Ïòdir£¨²ÎÊýµÄ¶þ½×ÌÝ¶È£©
-//lbfgsÖÐµÄtwo loop£¬ÓÃ¹ýÈ¥m´ÎµÄÐÅÏ¢À´½üËÆ¼ÆËãHessian¾ØÕóµÄÄæ(½ø¶øµÃµ½µ±Ç°µÄÏÂ½µ·½Ïò)
+//è®¡ç®—ä¸‹é™æ–¹å‘dirï¼ˆå‚æ•°çš„äºŒé˜¶æ¢¯åº¦ï¼‰
+//lbfgsä¸­çš„two loopï¼Œç”¨è¿‡åŽ»mæ¬¡çš„ä¿¡æ¯æ¥è¿‘ä¼¼è®¡ç®—HessiançŸ©é˜µçš„é€†(è¿›è€Œå¾—åˆ°å½“å‰çš„ä¸‹é™æ–¹å‘)
 void OptimizerState::MapDirByInverseHessian() {
-	int count = (int)sList.size(); //lbfgs¼ÇÒäµÄ¹ýÈ¥µÄµü´ú½á¹ûµÄ¸öÊým
+	int count = (int)sList.size(); //lbfgsè®°å¿†çš„è¿‡åŽ»çš„è¿­ä»£ç»“æžœçš„ä¸ªæ•°m
 
 	if (count != 0) {
-		//µÚÒ»¸öfor loop
+		//ç¬¬ä¸€ä¸ªfor loop
 		for (int i = count - 1; i >= 0; i--) {
-			alphas[i] = -dotProduct(*sList[i], dir) / roList[i]; //²»Í¬ÓÚÂÛÎÄÖÐµÄµØ·½ÊÇ£¬ÕâÀïruoµÄ¼ÆËãÎ´È¡µ¹Êý£¬ËùÒÔÕâÀïÊÇ³ý·¨£»ÁíÍâ£¬ÕâÀïµÄalphaÈ¡ÁË¸ºÖµ
+			alphas[i] = -dotProduct(*sList[i], dir) / roList[i]; //ä¸åŒäºŽè®ºæ–‡ä¸­çš„åœ°æ–¹æ˜¯ï¼Œè¿™é‡Œruoçš„è®¡ç®—æœªå–å€’æ•°ï¼Œæ‰€ä»¥è¿™é‡Œæ˜¯é™¤æ³•ï¼›å¦å¤–ï¼Œè¿™é‡Œçš„alphaå–äº†è´Ÿå€¼
 			addMult(dir, *yList[i], alphas[i]);
 		}
 
-		//¸ù¾ÝlastYºÍlastRuo scaleÁËÒ»ÏÂdir
-		//ÎªÊ²Ã´ÒªscaleÄØ£¿
+		//æ ¹æ®lastYå’ŒlastRuo scaleäº†ä¸€ä¸‹dir
+		//ä¸ºä»€ä¹ˆè¦scaleå‘¢ï¼Ÿ
 		const DblVec& lastY = *yList[count - 1];
 		double yDotY = dotProduct(lastY, lastY);
 		double scalar = roList[count - 1] / yDotY;
 		scale(dir, scalar);
 
-		//µÚ¶þ¸öfor loop
+		//ç¬¬äºŒä¸ªfor loop
 		for (int i = 0; i < count; i++) {
-			double beta = dotProduct(*yList[i], dir) / roList[i];//²»Í¬ÓÚÂÛÎÄÖÐµÄµØ·½ÊÇ£¬ÕâÀïruoµÄ¼ÆËãÎ´È¡µ¹Êý£¬ËùÒÔÕâÀïÊÇ³ý·¨
+			double beta = dotProduct(*yList[i], dir) / roList[i];//ä¸åŒäºŽè®ºæ–‡ä¸­çš„åœ°æ–¹æ˜¯ï¼Œè¿™é‡Œruoçš„è®¡ç®—æœªå–å€’æ•°ï¼Œæ‰€ä»¥è¿™é‡Œæ˜¯é™¤æ³•
 			addMult(dir, *sList[i], -alphas[i] - beta);
 		}
 	}
 }
 
 void OptimizerState::FixDirSigns() {
-	//Èç¹û´æÔÚl1ÕýÔò»¯Ïî
+	//å¦‚æžœå­˜åœ¨l1æ­£åˆ™åŒ–é¡¹
 	if (l1weight > 0) {
-		//dimÊÇ²ÎÊý£¨ÌØÕ÷£©µÄÎ¬¶ÈÊý
+		//dimæ˜¯å‚æ•°ï¼ˆç‰¹å¾ï¼‰çš„ç»´åº¦æ•°
 		for (size_t i = 0; i<dim; i++) {
-			//dir[i]ÓëÔ­À´µÄÐéÌÝ¶È¼ÆËã³öÀ´µÄ·½Ïò²»Í¬µÄÎ¬¶È£¬ÖÃÁã
+			//dir[i]ä¸ŽåŽŸæ¥çš„è™šæ¢¯åº¦è®¡ç®—å‡ºæ¥çš„æ–¹å‘ä¸åŒçš„ç»´åº¦ï¼Œç½®é›¶
 			if (dir[i] * steepestDescDir[i] <= 0) {
 				dir[i] = 0;
 			}
@@ -144,14 +144,14 @@ void OptimizerState::TestDirDeriv() {
 	if (!quiet) cout << "  Grad check: " << numDeriv << " vs. " << deriv << "  ";
 }
 
-//¼ÆËãµÄÊÇÏßÐÔ²éÕÒ¸üÐÂ²½³¤µÄÒ»²¿·Ö£ºÅÐ¶ÏÍ£Ö¹²éÕÒµÄÌõ¼þÖÐµÄÏÂ½µ·½Ïò*ÐéÌÝ¶È[Î´³ËÒÔalpha]
+//è®¡ç®—çš„æ˜¯çº¿æ€§æŸ¥æ‰¾æ›´æ–°æ­¥é•¿çš„ä¸€éƒ¨åˆ†ï¼šåˆ¤æ–­åœæ­¢æŸ¥æ‰¾çš„æ¡ä»¶ä¸­çš„ä¸‹é™æ–¹å‘*è™šæ¢¯åº¦[æœªä¹˜ä»¥alpha]
 double OptimizerState::DirDeriv() const {
 	if (l1weight == 0) {
 		return dotProduct(dir, grad);
 	} else {
 		double val = 0.0;
 		for (size_t i = 0; i < dim; i++) {
-			//Í¬MakeSteepestDescDirÖÐÐéÌÝ¶ÈµÄ¼ÆËã
+			//åŒMakeSteepestDescDirä¸­è™šæ¢¯åº¦çš„è®¡ç®—
 			if (dir[i] != 0) { 
 				if (x[i] < 0) {
 					val += dir[i] * (grad[i] - l1weight);
@@ -169,13 +169,13 @@ double OptimizerState::DirDeriv() const {
 	}
 }
 
-//¸ù¾Ýx£¬dir£¬alpha»ñµÃÐÂµÄ²éÕÒµãnewX
+//æ ¹æ®xï¼Œdirï¼ŒalphaèŽ·å¾—æ–°çš„æŸ¥æ‰¾ç‚¹newX
 void OptimizerState::GetNextPoint(double alpha) {
-	//»ñµÃÐÂµÄ²éÕÒµãnewX
+	//èŽ·å¾—æ–°çš„æŸ¥æ‰¾ç‚¹newX
 	addMultInto(newX, x, dir, alpha);
 	if (l1weight > 0) {
 		for (size_t i=0; i<dim; i++) {
-			//Èç¹û²éÕÒµã¿çÁËÏóÏÞ£¬ÖÃÁã
+			//å¦‚æžœæŸ¥æ‰¾ç‚¹è·¨äº†è±¡é™ï¼Œç½®é›¶
 			if (x[i] * newX[i] < 0.0) {
 				newX[i] = 0.0;
 			}
@@ -184,22 +184,22 @@ void OptimizerState::GetNextPoint(double alpha) {
 }
 
 double OptimizerState::EvalL1() {
-	//¸ù¾ÝÐÂµÄX£¨¼´²ÎÊý£©À´¼ÆËãÐÂµÄÌÝ¶ÈnewGrad¡¢ÐÂµÄËðÊ§Öµloss
+	//æ ¹æ®æ–°çš„Xï¼ˆå³å‚æ•°ï¼‰æ¥è®¡ç®—æ–°çš„æ¢¯åº¦newGradã€æ–°çš„æŸå¤±å€¼loss
 	double val = func.Eval(newX, newGrad);
-	//Èç¹ûl1ÕýÔò»¯ÏîµÄ²ÎÊýÎªÕý£¬ËðÊ§¼ÓÉÏl1ÕýÔò»¯ÏîµÄ²¿·Ö
+	//å¦‚æžœl1æ­£åˆ™åŒ–é¡¹çš„å‚æ•°ä¸ºæ­£ï¼ŒæŸå¤±åŠ ä¸Šl1æ­£åˆ™åŒ–é¡¹çš„éƒ¨åˆ†
 	if (l1weight > 0) {
 		for (size_t i=0; i<dim; i++) {
 			val += fabs(newX[i]) * l1weight;
 		}
 	}
 
-	//·µ»ØËðÊ§Öµ
+	//è¿”å›žæŸå¤±å€¼
 	return val;
 }
 
-//»ØÍËµÄÏßÐÔ²éÕÒ£ºÕÒ¸üÐÂµÄ²½³¤£¨Ñ§Ï°ÂÊ£©alpha
+//å›žé€€çš„çº¿æ€§æŸ¥æ‰¾ï¼šæ‰¾æ›´æ–°çš„æ­¥é•¿ï¼ˆå­¦ä¹ çŽ‡ï¼‰alpha
 void OptimizerState::BackTrackingLineSearch() {
-	//¼ÆËãµÄÊÇÏßÐÔ²éÕÒ¸üÐÂ²½³¤µÄÒ»²¿·Ö£ºÅÐ¶ÏÍ£Ö¹²éÕÒµÄÌõ¼þÖÐµÄÏÂ½µ·½Ïò*ÐéÌÝ¶È[Î´³ËÒÔalpha]
+	//è®¡ç®—çš„æ˜¯çº¿æ€§æŸ¥æ‰¾æ›´æ–°æ­¥é•¿çš„ä¸€éƒ¨åˆ†ï¼šåˆ¤æ–­åœæ­¢æŸ¥æ‰¾çš„æ¡ä»¶ä¸­çš„ä¸‹é™æ–¹å‘*è™šæ¢¯åº¦[æœªä¹˜ä»¥alpha]
 	double origDirDeriv = DirDeriv();
 	// if a non-descent direction is chosen, the line search will break anyway, so throw here
 	// The most likely reason for this is a bug in your function's gradient computation
@@ -211,93 +211,93 @@ void OptimizerState::BackTrackingLineSearch() {
 	double alpha = 1.0;
 	double backoff = 0.5;
 
-	//µÚÒ»´Îµü´úÊ±
+	//ç¬¬ä¸€æ¬¡è¿­ä»£æ—¶
 	if (iter == 1) {
 		//alpha = 0.1;
 		//backoff = 0.5;
-		//¼ÆËãdirµÄ¾ø¶ÔÖµ
+		//è®¡ç®—dirçš„ç»å¯¹å€¼
 		double normDir = sqrt(dotProduct(dir, dir));
-		//½«alpha¡¢backoffÉèÖÃ³ÉÐÂµÄÌØ¶¨Öµ
+		//å°†alphaã€backoffè®¾ç½®æˆæ–°çš„ç‰¹å®šå€¼
 		alpha = (1 / normDir);
 		backoff = 0.1;
 	}
 
 	const double c1 = 1e-4;
-	double oldValue = value; //¼ÇÂ¼Ö®Ç°µÄËðÊ§Öµ
+	double oldValue = value; //è®°å½•ä¹‹å‰çš„æŸå¤±å€¼
 
 	while (true) {
-		//¸ù¾Ýx£¬dir£¬alpha»ñµÃÐÂµÄ²éÕÒµãnewX
+		//æ ¹æ®xï¼Œdirï¼ŒalphaèŽ·å¾—æ–°çš„æŸ¥æ‰¾ç‚¹newX
 		GetNextPoint(alpha);
-		//¸ù¾ÝnewX£¨¼´²ÎÊý£©À´¼ÆËãÐÂµÄÌÝ¶ÈnewGrad¡¢ÐÂµÄËðÊ§Öµvalue
+		//æ ¹æ®newXï¼ˆå³å‚æ•°ï¼‰æ¥è®¡ç®—æ–°çš„æ¢¯åº¦newGradã€æ–°çš„æŸå¤±å€¼value
 		value = EvalL1();
 
 
-		//¼ÆËãµÄÊÇÏßÐÔ²éÕÒ¸üÐÂ²½³¤µÄÍ£Ö¹²éÕÒÌõ¼þ
+		//è®¡ç®—çš„æ˜¯çº¿æ€§æŸ¥æ‰¾æ›´æ–°æ­¥é•¿çš„åœæ­¢æŸ¥æ‰¾æ¡ä»¶
 		if (value <= oldValue + c1 * origDirDeriv * alpha) break;
 
 		if (!quiet) cout << "." << flush;
 
-		//¸üÐÂalpha£ºÈç¹û²»·ûºÏÍ£Ö¹²éÕÒÌõ¼þ£¬²½³¤»ØÍË£¬¼´beta^n
+		//æ›´æ–°alphaï¼šå¦‚æžœä¸ç¬¦åˆåœæ­¢æŸ¥æ‰¾æ¡ä»¶ï¼Œæ­¥é•¿å›žé€€ï¼Œå³beta^n
 		alpha *= backoff;
 	}
 
 	if (!quiet) cout << endl;
 }
 
-//ÓÅ»¯µÄ×´Ì¬Ç¨ÒÆ£º¸üÐÂlbfgsÖÐÁ½¸ö¼ÇÒäÁÐ±í
+//ä¼˜åŒ–çš„çŠ¶æ€è¿ç§»ï¼šæ›´æ–°lbfgsä¸­ä¸¤ä¸ªè®°å¿†åˆ—è¡¨
 void OptimizerState::Shift() {
 	DblVec *nextS = NULL, *nextY = NULL;
 
-	//lbfgsÖÐ¼ÇÒäÏîµÄ¸öÊý
+	//lbfgsä¸­è®°å¿†é¡¹çš„ä¸ªæ•°
 	int listSize = (int)sList.size();
 
-	//¸Õ¿ªÊ¼Ê±£¬¼ÇÒäÏî²»µ½m£¬ËùÒÔÉêÇëÐÂµÄ¼ÇÒäÏî¿Õ¼ä
+	//åˆšå¼€å§‹æ—¶ï¼Œè®°å¿†é¡¹ä¸åˆ°mï¼Œæ‰€ä»¥ç”³è¯·æ–°çš„è®°å¿†é¡¹ç©ºé—´
 	if (listSize < m) {
 		try {
 			nextS = new vector<double>(dim);
 			nextY = new vector<double>(dim);
 		} catch (bad_alloc) {
-			m = listSize; //Î´·ÖÅäµÄ¿ÉÓÃÄÚ´æ²»¹»Ê±£¬¾ÍÊ¹ÓÃµ±Ç°ÄÜ¹»·ÖÅäµÄ¼ÇÒäÏîµÄÊýÁ¿×÷Îªm
-			if (nextS != NULL) { //Èç¹û¸øS·ÖÅä³É¹¦ÁË£¬µ«YÎ´·ÖÅä³É¹¦£¬¾Í°ÑSÊÍ·Åµô
+			m = listSize; //æœªåˆ†é…çš„å¯ç”¨å†…å­˜ä¸å¤Ÿæ—¶ï¼Œå°±ä½¿ç”¨å½“å‰èƒ½å¤Ÿåˆ†é…çš„è®°å¿†é¡¹çš„æ•°é‡ä½œä¸ºm
+			if (nextS != NULL) { //å¦‚æžœç»™Såˆ†é…æˆåŠŸäº†ï¼Œä½†Yæœªåˆ†é…æˆåŠŸï¼Œå°±æŠŠSé‡Šæ”¾æŽ‰
 				delete nextS;
 				nextS = NULL;
 			}
 		}
 	}
 
-	//Èç¹ûÎ´·ÖÅäÐÂµÄSºÍY£¬¼´ÒÑ¾­ÓÐm¸ö¼ÇÒäÏîÁË
+	//å¦‚æžœæœªåˆ†é…æ–°çš„Så’ŒYï¼Œå³å·²ç»æœ‰mä¸ªè®°å¿†é¡¹äº†
 	if (nextS == NULL) {
 		nextS = sList.front();
-		sList.pop_front(); //µ¯³ö×îÀÏµÄs
+		sList.pop_front(); //å¼¹å‡ºæœ€è€çš„s
 		nextY = yList.front();
-		yList.pop_front(); //µ¯³ö×îÀÏµÄy
-		roList.pop_front(); //µ¯³ö×îÀÏµÄrou
+		yList.pop_front(); //å¼¹å‡ºæœ€è€çš„y
+		roList.pop_front(); //å¼¹å‡ºæœ€è€çš„rou
 	}
 
-	//¼ÆËã²ÎÊýºÍÌÝ¶ÈµÄ²îÖµ£¬´æÈë*nextSºÍnextY
+	//è®¡ç®—å‚æ•°å’Œæ¢¯åº¦çš„å·®å€¼ï¼Œå­˜å…¥*nextSå’ŒnextY
 	addMultInto(*nextS, newX, x, -1);
 	addMultInto(*nextY, newGrad, grad, -1);
 
-	//¼ÆËãÐÂµÄruo£¬²»Í¬ÓÚÂÛÎÄÖÐµÄµØ·½ÊÇ£¬ÕâÀïÎ´È¡µ¹Êý
+	//è®¡ç®—æ–°çš„ruoï¼Œä¸åŒäºŽè®ºæ–‡ä¸­çš„åœ°æ–¹æ˜¯ï¼Œè¿™é‡Œæœªå–å€’æ•°
 	double ro = dotProduct(*nextS, *nextY); 
 
-	//±£´æÐÂµÄ¼ÇÒäÏî
+	//ä¿å­˜æ–°çš„è®°å¿†é¡¹
 	sList.push_back(nextS);
 	yList.push_back(nextY);
 	roList.push_back(ro);
 
-	//½«ÐÂµÄ²ÎÊýºÍÐéÌÝ¶ÈÉèÎªµ±Ç°µÄ²ÎÊýºÍÐéÌÝ¶È
+	//å°†æ–°çš„å‚æ•°å’Œè™šæ¢¯åº¦è®¾ä¸ºå½“å‰çš„å‚æ•°å’Œè™šæ¢¯åº¦
 	x.swap(newX);
 	grad.swap(newGrad);
 
-	//µü´ú¼ÆÊýÔö¼Ó
+	//è¿­ä»£è®¡æ•°å¢žåŠ 
 	iter++;
 }
 
-//Ñ°ÕÒ×îÐ¡ËðÊ§µÄ¹ý³Ì
-//ÊäÈëÒÀ´ÎÎª£ºÓÅ»¯ÎÊÌâ¡¢³õÊ¼²ÎÊý¡¢ÊÕÁ²Ê±µÄ²ÎÊý£¨Êä³öµÄ½á¹û£©¡¢l1ÕýÔò»¯ÏîµÄ²ÎÊý¡¢ÔÊÐíµÄÎó²î¡¢limit-memoryÖÐ¼ÇÒäµÄµü´ú²½ÊýµÄÊýÁ¿
+//å¯»æ‰¾æœ€å°æŸå¤±çš„è¿‡ç¨‹
+//è¾“å…¥ä¾æ¬¡ä¸ºï¼šä¼˜åŒ–é—®é¢˜ã€åˆå§‹å‚æ•°ã€æ”¶æ•›æ—¶çš„å‚æ•°ï¼ˆè¾“å‡ºçš„ç»“æžœï¼‰ã€l1æ­£åˆ™åŒ–é¡¹çš„å‚æ•°ã€å…è®¸çš„è¯¯å·®ã€limit-memoryä¸­è®°å¿†çš„è¿­ä»£æ­¥æ•°çš„æ•°é‡
 void OWLQN::Minimize(DifferentiableFunction& function, const DblVec& initial, DblVec& minimum, double l1weight, double tol, int m) const {
-	//ÊäÈëÒÀ´ÎÎª£ºÓÅ»¯ÎÊÌâ¡¢³õÊ¼²ÎÊý¡¢limit-memoryÖÐ¼ÇÒäµÄµü´ú²½ÊýµÄÊýÁ¿¡¢l1ÕýÔò»¯ÏîµÄ²ÎÊý¡¢ÊÇ·ñÊä³ö¾²Ä¬
+	//è¾“å…¥ä¾æ¬¡ä¸ºï¼šä¼˜åŒ–é—®é¢˜ã€åˆå§‹å‚æ•°ã€limit-memoryä¸­è®°å¿†çš„è¿­ä»£æ­¥æ•°çš„æ•°é‡ã€l1æ­£åˆ™åŒ–é¡¹çš„å‚æ•°ã€æ˜¯å¦è¾“å‡ºé™é»˜
 	OptimizerState state(function, initial, m, l1weight, quiet);
 
 	if (!quiet) {
@@ -315,28 +315,28 @@ void OWLQN::Minimize(DifferentiableFunction& function, const DblVec& initial, Db
 	termCrit->GetValue(state, str);
 
 	while (true) {
-		//¸üÐÂsearch direction
+		//æ›´æ–°search direction
 		state.UpdateDir();
-		//²éÕÒstep size
+		//æŸ¥æ‰¾step size
 		state.BackTrackingLineSearch();
 
-		//ÅÐ¶ÏÊÇ·ñÂú×ãÖÕÖ¹Ìõ¼þ
+		//åˆ¤æ–­æ˜¯å¦æ»¡è¶³ç»ˆæ­¢æ¡ä»¶
 		ostringstream str;
-		//¼õÉÙµÄËðÊ§ÖµÏà¶ÔÓÚµ±Ç°ËðÊ§µÄ±ÈÀý
+		//å‡å°‘çš„æŸå¤±å€¼ç›¸å¯¹äºŽå½“å‰æŸå¤±çš„æ¯”ä¾‹
 		double termCritVal = termCrit->GetValue(state, str);
 		if (!quiet) {
 			cout << "Iter " << setw(4) << state.iter << ":  " << setw(10) << state.value;
 			cout << str.str() << flush;
 		}
-		//Èç¹û¼õÉÙµÄËðÊ§ÖµÏà¶ÔÓÚµ±Ç°ËðÊ§µÄ±ÈÀýÐ¡ÓÚÄ³¸öãÐÖµ£¬¾ÍÍ£Ö¹µü´ú
+		//å¦‚æžœå‡å°‘çš„æŸå¤±å€¼ç›¸å¯¹äºŽå½“å‰æŸå¤±çš„æ¯”ä¾‹å°äºŽæŸä¸ªé˜ˆå€¼ï¼Œå°±åœæ­¢è¿­ä»£
 		if (termCritVal < tol) break;
 
-		//¸üÐÂ×´Ì¬
+		//æ›´æ–°çŠ¶æ€
 		state.Shift();
 	}
 
 	if (!quiet) cout << endl;
 
-	//½«×îÖÕµÃµ½µÄ²ÎÊý´æµ½¼ÆËã½á¹û±äÁ¿ÖÐ
+	//å°†æœ€ç»ˆå¾—åˆ°çš„å‚æ•°å­˜åˆ°è®¡ç®—ç»“æžœå˜é‡ä¸­
 	minimum = state.newX;
 }
