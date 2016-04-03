@@ -58,6 +58,10 @@ void OptimizerState::MakeSteepestDescDir() {
 * LBFGS:[J. Nocedal and S. Wright. Numerical Optimization. Springer, 2nd
 edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
 * OWLQN:[Galen Andrew and Jianfeng Gao.Scalable Training of L1-Regularized Log-Linear Models.2007](http://research.microsoft.com/en-us/um/people/jfgao/paper/icml07scalable.pdf)
+### 一些问题
+* LBFGS的局限性
+
+* OWLQN对LBFGS的改进
 
 ### 代码中OWLQN的计算流程
 ![](notes1/owlqn.jpg)

@@ -12,7 +12,7 @@ class LogisticRegressionProblem {
 	std::deque<size_t> indices; //样本i的维度值，indeces[instance_starts[i]]到indices[instance_starts[i-1] - 1]
 	std::deque<float> values;//样本i的与indices中维度值对应的特征值，values[instance_starts[i]]到values[instance_starts[i-1] - 1]
 	std::deque<size_t> instance_starts;//样本i在indices和values中的起始位置，instance_starts[i]
-	std::deque<bool> labels;//样本i的label，labels[i]
+	std::deque<bool> labels;//样本i的label，labels[i]，label为bool
 	size_t numFeats;//样本的维数
 
 public:
