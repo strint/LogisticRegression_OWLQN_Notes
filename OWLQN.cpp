@@ -96,7 +96,7 @@ void OptimizerState::MapDirByInverseHessian() {
 			addMult(dir, *yList[i], alphas[i]);
 		}
 
-		//根据lastY和lastRuo scale了一下dir，对应论文中的rj，这里保存了roList，所以使用roList[[count - 1]简化了计算
+		//根据lastY和lastRuo 计算了一个值，对应论文中的rj，这里保存了roList，所以使用roList[[count - 1]简化了计算
 		const DblVec& lastY = *yList[count - 1];
 		double yDotY = dotProduct(lastY, lastY);
 		double scalar = roList[count - 1] / yDotY;
