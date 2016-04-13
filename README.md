@@ -66,6 +66,8 @@ edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
 ### 代码中OWLQN的计算流程
 ![](notes1/owlqn.jpg)
 
+## 逻辑回归和OWLQN的数据流和数据依赖
+![](notes1/data_flow.jpg)
 
 
 ## 相关的项目
