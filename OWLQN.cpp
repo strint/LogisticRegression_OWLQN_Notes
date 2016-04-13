@@ -285,7 +285,7 @@ void OptimizerState::Shift() {
 	yList.push_back(nextY);
 	roList.push_back(ro);
 
-	//将新的参数和虚梯度设为当前的参数和虚梯度
+	//将新的参数和梯度设为当前的参数和梯度
 	x.swap(newX);
 	grad.swap(newGrad);
 
