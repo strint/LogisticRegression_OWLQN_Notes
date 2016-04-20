@@ -72,3 +72,7 @@ edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
 
 ## 相关的项目
 [并行逻辑回归](https://github.com/strint/DML/tree/master/logistic_regression)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/strint/logisticregression_owlqn_notes/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
