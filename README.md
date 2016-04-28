@@ -1,9 +1,30 @@
-# LogisticRegression_OWLQN_Notes
-逻辑回归和OWLQN优化算法学习笔记，这个笔记围绕[Galen Andrew and Jianfeng Gao. 2007](http://research.microsoft.com/en-us/downloads/b1eb1016-1738-4bd5-83a9-370c9d498a03/default.aspx)
-这篇论文实现的代码来整理逻辑回归、OWLQN的原理和实现。
+# 逻辑回归及OWLQN优化的算法和实现
+## Logistic Regression
+### 逻辑回归的模型
+
+![](pics/lr.jpg)
+
+### 代码中逻辑回归对应的公式和计算流程
+
+![](pics/lr_formular.jpg)
+![](pics/lr_owlqn.jpg)
+
+
+## OWLQN
+* BFGS, LBFGS: [Anders Skajaa.Limited Memory BFGS for Nonsmooth Optimization.2010](http://www.cs.nyu.edu/overton/mstheses/skajaa/msthesis.pdf)
+* LBFGS:[J. Nocedal and S. Wright. Numerical Optimization. Springer, 2nd
+edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
+* OWLQN:[Galen Andrew and Jianfeng Gao.Scalable Training of L1-Regularized Log-Linear Models.2007](http://research.microsoft.com/en-us/um/people/jfgao/paper/icml07scalable.pdf)
+
+![](pics/owlqn.jpg)
+
+
+## 逻辑回归和OWLQN中的数据流和数据依赖
+![](pics/data_flow.jpg)
 
 ## 代码
-上面的代码是[Galen Andrew and Jianfeng Gao. 2007](http://research.microsoft.com/en-us/downloads/b1eb1016-1738-4bd5-83a9-370c9d498a03/default.aspx)论文中附带的。在这里对代码添加了比较详细的注释，详细代码参见目录中的其它文件。其中对虚梯度部分计算的注释如下：
+附带的代码是[Galen Andrew and Jianfeng Gao. 2007](http://research.microsoft.com/en-us/downloads/b1eb1016-1738-4bd5-83a9-370c9d498a03/default.aspx)论文中提供的。在这里对代码添加了比较详细的注释，详细代码参见目录中的其它文件。其中对虚梯度部分计算的注释如下：
+
 ```cpp
 //OWLQN
 //计算下降方向dir（参数的一阶梯度，虚梯度的负方向）
@@ -41,38 +62,10 @@ void OptimizerState::MakeSteepestDescDir() {
 }
 ```
 
-## Logistic Regression
-* 逻辑回归的公式
-
-![](notes1/lr.jpg)
-
-* 代码中逻辑回归对应的公式和计算流程
-
-![](notes1/lr_formular.jpg)
-![](notes1/lr_owlqn.jpg)
-
-
-## OWLQN
-### 相关论文
-* BFGS, LBFGS: [Anders Skajaa.Limited Memory BFGS for Nonsmooth Optimization.2010](http://www.cs.nyu.edu/overton/mstheses/skajaa/msthesis.pdf)
-* LBFGS:[J. Nocedal and S. Wright. Numerical Optimization. Springer, 2nd
-edition, 2006.](http://home.agh.edu.pl/~pba/pdfdoc/Numerical_Optimization.pdf)
-* OWLQN:[Galen Andrew and Jianfeng Gao.Scalable Training of L1-Regularized Log-Linear Models.2007](http://research.microsoft.com/en-us/um/people/jfgao/paper/icml07scalable.pdf)
-### 一些问题
-* LBFGS的局限性
-
-* OWLQN对LBFGS的改进
-
-### 代码中OWLQN的计算流程
-![](notes1/owlqn.jpg)
-
-## 逻辑回归和OWLQN的数据流和数据依赖
-![](notes1/data_flow.jpg)
-
 
 ## 相关的项目
-[并行逻辑回归](https://github.com/strint/DML/tree/master/logistic_regression)
+[并行逻辑回归](https://github.com/xswang/DML/tree/master/logistic_regression)
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/strint/logisticregression_owlqn_notes/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+##参考
+* [Galen Andrew and Jianfeng Gao. 2007](http://research.microsoft.com/en-us/downloads/b1eb1016-1738-4bd5-83a9-370c9d498a03/default.aspx)
