@@ -1,4 +1,4 @@
-# 逻辑回归及OWLQN优化的算法和实现
+# 逻辑回归及OWLQN的算法和实现
 ## Logistic Regression
 ### 逻辑回归的模型
 
